@@ -1,0 +1,129 @@
+#include <SSD1306Ascii.h> //i2C OLED
+#include <SSD1306AsciiWire.h> //i2C OLED
+#include <AS5600.h>
+#include <Wire.h>
+
+AS5600 as5600;
+
+float displacement = 0;
+float velocity = 0;
+float avgVelocity = 0;
+float bottomPosition = 0;
+float finalPosition = 0;
+float p1 = 0;
+float p2 = 0;
+bool going_up;
+float micro_displacement;
+float vel = 0;
+float vel_sum = 0;
+unsigned long startTime = 0;
+int noise_out = 7;
+
+float myArray[2];
+float avg_vel_finished[3]; // Change this number later on to a variable that I can change so that the number of reps I can do is different
+
+void setup()
+{
+  Serial.begin(115200);
+  //Serial.println(__FILE__);
+  //Serial.print("AS5600_LIB_VERSION: ");
+  //Serial.println(AS5600_LIB_VERSION);
+  pinMode(7, OUTPUT);
+  Wire.begin();
+
+  as5600.begin(4);  //  set direction pin.
+  as5600.setDirection(AS5600_CLOCK_WISE);
+  Serial.print("Connect device: ");
+  Serial.println(as5600.isConnected() ? "true" : "false");
+
+  Serial.println("START REP");
+  digitalWrite(7, HIGH); //Set the voltage to high and makes a noise
+  delay(1500);
+  digitalWrite(7, LOW);//Sets the voltage to low and makes no noise
+}
+
+int n = 0;
+int i = 0;
+//-----------------------------------------------
+
+void loop(){
+  static uint32_t lastTime = 0;
+
+  uint32_t startTime = micros();
+  myArray[1] = as5600.getCumulativePosition()/292.5714286;
+  //  set initial position
+  as5600.getCumulativePosition();
+  
+  //  update every 100 ms
+  //  should be enough up to ~200 RPM
+  if (millis() - lastTime >= 100)
+  {
+    //float p2 = as5600.getCumulativePosition()/292.5714286;
+    lastTime = millis();
+    // Serial.print(millis());
+    // //Serial.print(as5600.getCumulativePosition());
+    // Serial.print("\t");
+    // Serial.print(as5600.getRevolutions());
+    // Serial.print("\t");
+    //Serial.println(as5600.getCumulativePosition()/292.5714286); //Converts the raw angle to Centimeters because the diameter is 14 cm --> 4096 / 14 = 292.5714286
+
+  //--------------------------------------Trial function for velocity
+    if(startTime >= 100){
+        myArray[2] = as5600.getCumulativePosition()/292.5714286;
+
+        if (myArray[1] <= myArray[2]){// is it going upward
+        //Do someting here about noteing down the cum position so that I can compare that with the ending position on the rep and then create a range of motion stat...!
+          vel = (myArray[2] - myArray[1])/.1; // Displacement distance devided by time (1 thenth of a second)
+          Serial.println(vel);
+          vel_sum = vel_sum + vel;
+          n++;
+        } else if (n > 10) {
+          Serial.println("the average Velocity of that concentric was ");
+            Serial.println(vel_sum/n);
+            avg_vel_finished[i] = vel_sum/n;
+            delay(5000);
+            myArray[1] = 0;
+            myArray[2]= 0;
+            vel_sum = 0;
+            n = 0;
+            Serial.println(i);
+            i++;
+            if (i > 2){ //End of set shows all data -- Create some kind of switch that tells the device how many repts 1 - 3 - 5
+              i = 0;
+              Serial.print("Your Velocity #");
+              Serial.print(1);
+              Serial.print(":   ");
+              Serial.println(avg_vel_finished[0]);
+              Serial.print("Your Velocity #");
+              Serial.print(2);
+              Serial.print(":   ");
+              Serial.println(avg_vel_finished[1]);
+              Serial.print("Your Velocity #");
+              Serial.print(3);
+              Serial.print(":   ");
+              Serial.println(avg_vel_finished[2]);
+              Serial.print("Your average set velocity was: ");
+              Serial.println((avg_vel_finished[0] +avg_vel_finished[1] +avg_vel_finished[2])/3);
+              delay(100000);
+            }
+            Serial.println("start_rep");
+              digitalWrite(7, HIGH); //Set the voltage to high and makes a noise
+              delay(500);
+              digitalWrite(7, LOW);//Sets the voltage to low and makes no noise
+      } else {
+        n = 0;
+        myArray[1] = 0;
+        myArray[2]= 0;
+        vel_sum = 0;
+      }
+    } 
+//-------------------------------------------- end
+    
+} 
+
+  //  just to show how reset can be used
+  ///if (as5600.getRevolutions() >= 10)
+  //{
+    //as5600.resetPosition();
+  //}
+}
