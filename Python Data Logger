@@ -1,1 +1,52 @@
-// This python file takes the data that the arduino exports right from the serial monit9or with the intention of doing much harder data visualizations and collections in python.
+# This python file takes the data that the arduino exports right from the serial monit9or with the intention of doing much harder data visualizations and collections in python.
+import serial
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+import csv
+
+# Constants
+SERIAL_PORT = '/dev/cu.usbmodem14301'
+BAUD_RATE = 115200
+
+# Serial Connection
+ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
+
+#Initialize empty lists to store data
+position_vals = []
+time_vals = []
+
+# Update the plot
+def update_plot(frame):
+    read_and_process_data()
+    plt.cla()
+    plt.plot(position_vals, time_vals, label=' #1')
+    plt.xlabel('sensor Values')
+    plt.ylabel('time')
+    plt.legend()
+
+#Create a function to read and proccess data from Arduino
+def read_and_process_data():
+    line = ser.readline().decode('utf-8').strip()
+    sensorValues = line.split(', ')
+
+    position_vals.append(float(sensorValues[0]))
+    time_vals.append(int(sensorValues[1]))
+
+    # print the recieved values
+    print('Time: ' + str(position_vals[0]))
+
+def on_close(event):
+    #print("THIS IS A TEST OF THE END")
+    with open('arduino_data.csv', 'w', newline='\n') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['position_vals', 'time_vals'])
+        for p, t in zip(position_vals, time_vals):
+            writer.writerow([p, ' ', t])
+        
+
+# Register the callback function for when the plot window is closed
+fig, ax = plt.subplots()
+fig.canvas.mpl_connect('close_event', on_close)
+
+ani = FuncAnimation(fig, update_plot, interval=10)
+plt.show()
