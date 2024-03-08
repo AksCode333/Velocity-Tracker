@@ -24,7 +24,7 @@ def delete_rep(rep_num):
 # Initialize the main Tkinter window
 root = tk.Tk()
 root.geometry("950x600")
-root.title("Tkinter GUI Example")
+root.title("Velocity Tracking GUI Program")
 
 # Initialize a shared variable
 shared_variable = ""
@@ -113,11 +113,10 @@ weight_lab.grid(row=3, column=4, padx=3, pady=40)
 notes_entry = ttk.Entry(note_frame, width=30)
 notes_entry.grid(row=3, column=6, padx=5, pady=45,rowspan=1,columnspan=1)
 
-x = "a;lsdfjka;lsdkfj"
 
 # #BoX TO SHOW ALL THE DATA
-results = ttk.Frame(root, borderwidth=5, relief="sunken",padding= 1)
-results.grid(row=5, column=1, pady=10, padx=5)
+results = ttk.Frame(root, borderwidth=0, relief="sunken",padding= 1)
+results.grid(row=5, column=0, pady=10, padx=5, columnspan=2)
 
 #REP 1
 rep1 = ttk.Frame(results, borderwidth=5, relief="sunken",padding= 1)
@@ -132,6 +131,62 @@ rep1_other = ttk.Label(rep1, text = "Other = ", width=20)
 rep1_other.grid(row=4, column=1)
 rep1_delete = ttk.Button(rep1, text="DELETE", command=lambda: delete_rep(1), padding=10)
 rep1_delete.grid(row=5, column=1)
+
+#REP 2
+rep2 = ttk.Frame(results, borderwidth=5, relief="sunken",padding= 1)
+rep2.grid(row=5, column=2, rowspan=2, pady=10, padx=5)
+rep2_vel = ttk.Label(rep2, text = "AVG VEL = ", width=20)
+rep2_vel.grid(row=1, column=1)
+rep2_rom = ttk.Label(rep2, text = "ROM = ", width=20)
+rep2_rom.grid(row=2, column=1)
+rep2_time = ttk.Label(rep2, text = "TIME = ", width=20)
+rep2_time.grid(row=3, column=1)
+rep2_other = ttk.Label(rep2, text = "Other = ", width=20)
+rep2_other.grid(row=4, column=1)
+rep2_delete = ttk.Button(rep2, text="DELETE", command=lambda: delete_rep(2), padding=10)
+rep2_delete.grid(row=5, column=1)
+
+#REP 3
+rep3 = ttk.Frame(results, borderwidth=5, relief="sunken",padding= 1)
+rep3.grid(row=5, column=3, rowspan=2, pady=10, padx=5)
+rep3_vel = ttk.Label(rep3, text = "AVG VEL = ", width=20)
+rep3_vel.grid(row=1, column=1)
+rep3_rom = ttk.Label(rep3, text = "ROM = ", width=20)
+rep3_rom.grid(row=2, column=1)
+rep3_time = ttk.Label(rep3, text = "TIME = ", width=20)
+rep3_time.grid(row=3, column=1)
+rep3_other = ttk.Label(rep3, text = "Other = ", width=20)
+rep3_other.grid(row=4, column=1)
+rep3_delete = ttk.Button(rep3, text="DELETE", command=lambda: delete_rep(3), padding=10)
+rep3_delete.grid(row=5, column=1)
+
+#REP 4
+rep4 = ttk.Frame(results, borderwidth=5, relief="sunken",padding= 1)
+rep4.grid(row=5, column=4, rowspan=2, pady=10, padx=5)
+rep4_vel = ttk.Label(rep4, text = "AVG VEL = ", width=20)
+rep4_vel.grid(row=1, column=1)
+rep4_rom = ttk.Label(rep4, text = "ROM = ", width=20)
+rep4_rom.grid(row=2, column=1)
+rep4_time = ttk.Label(rep4, text = "TIME = ", width=20)
+rep4_time.grid(row=3, column=1)
+rep4_other = ttk.Label(rep4, text = "Other = ", width=20)
+rep4_other.grid(row=4, column=1)
+rep4_delete = ttk.Button(rep4, text="DELETE", command=lambda: delete_rep(4), padding=10)
+rep4_delete.grid(row=5, column=1)
+
+#rep 5
+rep5 = ttk.Frame(results, borderwidth=5, relief="sunken",padding= 1)
+rep5.grid(row=5, column=5, rowspan=2, pady=10, padx=5)
+rep5_vel = ttk.Label(rep5, text = "AVG VEL = ", width=20)
+rep5_vel.grid(row=1, column=1)
+rep5_rom = ttk.Label(rep5, text = "ROM = ", width=20)
+rep5_rom.grid(row=2, column=1)
+rep5_time = ttk.Label(rep5, text = "TIME = ", width=20)
+rep5_time.grid(row=3, column=1)
+rep5_other = ttk.Label(rep5, text = "Other = ", width=20)
+rep5_other.grid(row=4, column=1)
+rep5_delete = ttk.Button(rep5, text="DELETE", command=lambda: delete_rep(5), padding=10)
+rep5_delete.grid(row=5, column=1)
 
 
 # Start the Tkinter event loop
