@@ -2,6 +2,11 @@ import tkinter as tk
 from tkinter import ttk
 import sv_ttk
 
+def enter(x):
+    print("Changing the reps")
+
+def start():
+    print("Begin Rep")
 def update_reps(value):
     global rep_num
     global str_rep_num
@@ -23,7 +28,7 @@ def delete_rep(rep_num):
 
 # Initialize the main Tkinter window
 root = tk.Tk()
-root.geometry("950x600")
+root.geometry("1050x600")
 root.title("Velocity Tracking GUI Program")
 
 # Initialize a shared variable
@@ -63,6 +68,7 @@ liftcho.grid(row=0, column=0, padx=10, pady=40)
 #START OF THE REP DECIDER
 frame2 = ttk.Frame(root,borderwidth=5, relief="sunken",padding= 1)
 frame2.grid(row=0, column=1, rowspan=1, padx=10, pady=10)
+frame2.bind("<Enter>", enter)
 
 weight_choice = ttk.Label(frame2, text="# of Reps")
 weight_choice.grid(row=0, column=4, padx=10, pady=40)
@@ -188,6 +194,11 @@ rep5_other.grid(row=4, column=1)
 rep5_delete = ttk.Button(rep5, text="DELETE", command=lambda: delete_rep(5), padding=10)
 rep5_delete.grid(row=5, column=1)
 
+# Start Button
+start_outline = ttk.Frame(root, borderwidth=5, relief="raised")
+start_outline.grid(row=6, column=0, columnspan=2)
+start_button = ttk.Button(start_outline, text="START", command=lambda: start(), padding=10,width=100)
+start_button.grid(row=1, column=1)
 
 # Start the Tkinter event loop
 # This is where the magic happens
