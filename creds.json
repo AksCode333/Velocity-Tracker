@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "fitness-spreadsheet",
+  "private_key_id": "7d83fc31d003857a46aa56c5922c643ccc8362aa",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCuySQ5UiOfM2ci\njQ995fP/iHjSE8vv/BOFQbLKAgjtGS3tqEm+D+/UBqxdEfvW0QlK45K8cctxUcGm\nwwI6olhtPWTaDiz95aFfysA76JuaCQXQRkMLnd8ll6z50IZwNzFjyArWqXzEV0U6\ngBYqnj3bBg81uL/EGb+16oo+CX5anjNFmj6qbSyuyqtwLDrmrQgrb2USkl610NEs\nJMPZwFsm+1rIuyWKl6HObfGZ0yvmNHao/2C6SbJ1FnTWASk7v9/BXfjlpHL4VO2V\nCOXy8O7m3O2wH+v0y6duhOW50j5RRnApio1ZKgE6wLIzXbXvC0jlulkZ0a/4Mgk4\n7oHMp1xPAgMBAAECggEAAqpnpoYlq+5lQsYi99kTdRC4Qv/xSsot5Ajh+Km6SB9r\nr2WzJjZpAnNNmqfFDvwmJ6G74arcnvBPw0LTHGDQd24JxTeVIRQo92SItQExqlI7\n5/bCXAF+3zxmc3LmMfztgGeTHr37/KSWFjPQ4rqCF/6KKdgU+KEp5tTaYeLULf6Y\nNUbZF/1TWC3C8BdG9iSxigTXvqpO7qf/qEPgO6XGfRLr5j58kCWfMJR/sbYrhx/N\nRQE3QwMj8ExoPRKXruALw58fAemoAcxP9yKWTNNjabr5b/8H62pJBhrzCkn/y8Ze\nJ5OtZMH2q0Vwx74oD3e2KQa1wjv6p5SW5KEvn9ah+QKBgQDc6CLPBEGJ9xWM/fDb\nC4LbQIG0LSjXenBgmSwJZYCIIWPf2TRKQBbldBFujCHfxSpvmOV1oYS582FRXTcW\nniEvpmZhd7Za3H2NfgePnirBQjaIedZr8ZOy7G2bXUleCFUFiPf3K+z5Hscp8jYg\njRi/IuDxdSWIjmDK/uSQONZTWQKBgQDKjVkePfJu+oegV0iNNgzuHKXHj7lJg59d\n7/AFPMuipvm2UKDnKrIVDLTOTR55hDRQ4JfddqpYkgLdK3tgOxR4nFdZsaJNAsl6\nGa5eSx7+W20blTDOJTssHbIVJ2DFMXciKDxHbxmTo5EE0FiutR6PNPzOPJ+h08q3\n9aHj/xF/5wKBgDd4z2zeq7qCYlYCWp4WuOhnvWpKQMxDQb7wF7/QTkNg5xyKBXhz\nuYwq5km1RLhVYX+ejFhKk/LB6/kriC7UzI6ToXfuQMt2PMzwDeQBmsjm4JzKw45d\nnnI6rpdqCIdlXjxClcnqrNot4WNmIDNyWvl8P7JCcYdmAWZYNXsF2sQZAoGBALyW\nrIIe1UmFE6AzhEaOK63LmILdC3wqA8j3rHeD6mmvo9Ke8aEqPJKiuPlYDma/s+IV\nqvA1G1fJ4sbARGgNufquPhox7NZdIPABVztOIDZdM5I57y4Qti5WG8fcWRpg+vYf\nljhAdgTjhxN/VQKdei2F/VecVFjdE+MB3dClXUrDAoGALTvUi0cijoXoPFeX1AId\n5AwJyViF5HhZiarJ9OKvkmRCZG1LEbk27+ZKy4aSPVFvEnnP8H5Njle8olzUrUq+\nd6xtJztTeB/FcNDNYTIZ/RCcESqrGMPSEnC0vfTqcqM/b362QOe8eir+TZUDe3Nf\n3Omw/7THZ8OGOfE+ZVQ90Sg=\n-----END PRIVATE KEY-----\n",
+  "client_email": "ari-aks@fitness-spreadsheet.iam.gserviceaccount.com",
+  "client_id": "110988081458504765792",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ari-aks%40fitness-spreadsheet.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
