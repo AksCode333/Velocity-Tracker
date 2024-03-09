@@ -2,6 +2,19 @@ import tkinter as tk
 from tkinter import ttk
 import sv_ttk
 import serial
+import datetime
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+#google sheets stuff
+scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/spreadsheets',"https://www.googleapis.com/auth/drive.file","https://www.googleapis.com/auth/drive"]
+creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
+client = gspread.authorize(creds)
+sheet = client.open("Fitness").sheet1
+
+# Get the current date
+now = datetime.datetime.now()
+formatted_date = now.strftime("%m/%d/%y")
 
 # Constants
 SERIAL_PORT = 'COM3'
@@ -185,7 +198,11 @@ def finalize_data():
     print("The AVG set velocity was: ", sum(FINAL_VELOCITIES)/len(FINAL_VELOCITIES))
     print("The weight was: ",weight_entry.get()," ", kglb)
     print("the lift was: ", shared_variable)
-    
+
+    send_to_sheet = [formatted_date, shared_variable, weight_entry.get(), len(FINAL_VELOCITIES), sum(FINAL_VELOCITIES)/len(FINAL_VELOCITIES)]
+    sheet.insert_row(send_to_sheet, 2)
+
+
 #Random Variables
 rep_value = []
 vel = []
