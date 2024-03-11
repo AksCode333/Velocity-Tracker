@@ -17,12 +17,12 @@ now = datetime.datetime.now()
 formatted_date = now.strftime("%m/%d/%y")
 
 # Constants
-SERIAL_PORT = 'COM3'
-BAUD_RATE = 115200
+# SERIAL_PORT = '/dev/cu.usbserial-14310'
+# BAUD_RATE = 115200
+# ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
 global vel_list
 number_of_reps = 0
 #serial connections
-ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
 
 def enter(x):
     print("Changing the reps")
@@ -75,6 +75,9 @@ def delete_rep(rep_num):
     # vel_list.append(rep1_vel_value.set("0"))
 #retrieve the data from the arduino
 def get_data():
+    SERIAL_PORT = '/dev/cu.usbserial-14310'
+    BAUD_RATE = 115200
+    ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
     def read_and_process_data():
         line = ser.readline().decode('utf-8').strip()
         sensorValues = line.split(': ')
@@ -163,7 +166,7 @@ def finalize_data():
         x3 = rep4_vel_value.get()
         x3 = x3.split(': ')
         FINAL_VELOCITIES.append(float(x3[1]))
-    if str(rep5_vel_value.get()) != "0" and rep5_vel_value.get() != blank:  
+    if str(rep5_vel_value.get()) != "0":  
         print("its not working")
         x3 = rep5_vel_value.get()
         x3 = x3.split(': ')
