@@ -1,1 +1,286 @@
 
+#include <SSD1306Ascii.h> //i2C OLED
+#include <SSD1306AsciiWire.h> //i2C OLED
+#include <AS5600.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+// 0X3C+SA0 - 0x3C or 0x3D
+#define I2C_ADDRESS 0x3C
+
+// Define proper RST_PIN if required.
+#define RST_PIN -1
+
+#define SCREEN_WIDTH 128 // OLED oled width, in pixels
+#define SCREEN_HEIGHT 64 // OLED oled height, in pixels
+
+SSD1306AsciiWire oled;
+AS5600 as5600;
+
+float displacement = 0;
+float velocity = 0;
+float avgVelocity = 0;
+float bottomPosition = 0;
+float finalPosition = 0;
+float p1 = 0;
+float p2 = 0;
+bool going_up;
+const int reps = 10;
+float micro_displacement;
+float vel = 0;
+float vel_sum = 0;
+unsigned long startTime = 0;
+int noise_out = 7;
+int showROM = 6; 
+int avgROM = 0;
+const int confirm_button = 4; // Naming switch confirm_button pin
+int left_val = 0;
+const int potPin = 5;
+bool w = false;
+int t = 0;
+int repNum;
+int re = 0;
+float myArray[2];
+float avg_vel_finished[reps]; // Change this number later on to a variable that I can change so that the number of reps I can do is different
+float rom[3];
+int repTime[3];
+
+void setup()
+{
+  Serial.begin(115200);
+  //Serial.println(__FILE__);
+  //Serial.print("AS5600_LIB_VERSION: ");
+  //Serial.println(AS5600_LIB_VERSION);
+  #if RST_PIN >= 0
+    oled.begin(&Adafruit128x64, I2C_ADDRESS, RST_PIN);
+  #else // RST_PIN >= 0
+    oled.begin(&Adafruit128x64, I2C_ADDRESS);
+  #endif // RST_PIN >= 0
+    oled.setFont(Adafruit5x7);
+  
+  pinMode(showROM, INPUT);
+  pinMode(confirm_button, INPUT);
+  delay(400);
+  oled.clear();
+
+  init_settings();
+
+  oled.set2X();
+  
+  //oled.invertoled(true);
+  oled.setCursor(0, 0);
+  // oled static text
+  pinMode(7, OUTPUT);
+  Wire.begin();
+
+  as5600.begin();  //  set direction pin.
+  as5600.setDirection(AS5600_CLOCK_WISE);
+  //Serial.print("Connect device 0: ");
+  //Serial.println(as5600.isConnected() ? "true" : "false");
+  oled.clear();
+  oled.setCursor(0,0);
+  oled.println("Connect device:");
+  oled.println(as5600.isConnected() ? "true" : "false");
+   
+  
+  //Serial.println("START REP");
+  digitalWrite(7, HIGH); //Set the voltage to high and makes a noise
+  delay(300);
+  oled.clear();
+  oled.setCursor(0,0);
+  //oled.println("ACV: ");
+   
+  digitalWrite(7, LOW);//Sets the voltage to low and makes no noise
+
+
+  //Serial.println("Start distance");
+}
+
+int n = 0;
+int i = 0;
+int p = 0;
+//-----------------------------------------------
+int k = 0;
+
+void loop(){
+  //Serial.println(digitalRead(confirm_button));
+  // Serial.println(digitalRead(showROM));
+  static uint32_t lastTime = 0;
+
+  uint32_t startTime = micros();
+  myArray[1] = as5600.getCumulativePosition()/292.5714286*-1;
+  //  set initial position
+  as5600.getCumulativePosition();
+
+  //  update every 100 ms
+  //  should be enough up to ~200 RPM
+  if (millis() - lastTime >= 100)
+  {
+    //float p2 = as5600.getCumulativePosition()/292.5714286;
+    lastTime = millis();
+    // Serial.print(millis());
+    // //Serial.print(as5600.getCumulativePosition());
+    // Serial.print("\t");
+    // Serial.print(as5600.getRevolutions());
+    // Serial.print("\t");
+    //Serial.println(as5600.getCumulativePosition()/292.5714286*-1); //Converts the raw angle to Centimeters because the diameter is 14 cm --> 4096 / 14 = 292.5714286
+
+  //--------------------------------------Trial function for velocity
+    if(startTime >= 100){
+        myArray[2] = as5600.getCumulativePosition()/292.5714286*-1;
+        if (myArray[1] <= (myArray[2])){// is it going upward // Change htis between < & = for super low velocities
+          rom[re] = as5600.getCumulativePosition()/292.5714286;
+          repTime[re] = micros();
+          // Serial.println(micros());
+          re = 2;
+        //Do someting here about noteing down the cum position so that I can compare that with the ending position on the rep and then create a range of motion stat...!
+          vel = (myArray[2] - myArray[1])/.1; // Displacement distance devided by time (1 thenth of a second)
+          vel_sum = vel_sum + vel;
+          n++;
+        } else if (n > 40) { // Makes sure htat the rep is going on for a vertain amount of time
+            // rom[1] = as5600.getCumulativePosition()/292.5714286;
+            rom[1] = as5600.getCumulativePosition()/292.5714286;
+            repTime[1] = micros();
+            avgROM = avgROM + (rom[1] - rom[0]);
+            // Serial.println("rep end time");
+            //Serial.println("the average Velocity of that concentric was ");
+            //oled.setCursor(0, 20);
+            oled.print(vel_sum/n);
+            oled.println(" M/S");
+
+            Serial.print("Rep ");
+            Serial.print(k + 1);
+            Serial.print(": ");
+            Serial.print(vel_sum/n);
+            k = k + 1;
+            Serial.print(": ");
+            Serial.print(rom[0] - rom[1]);
+            Serial.print(": ");
+            Serial.println(float(repTime[0] - repTime[1]));
+            //Serial.println(vel_sum/n);
+            avg_vel_finished[i] = vel_sum/n;
+            delay(100);
+            myArray[1] = 0;
+            myArray[2]= 0;
+            vel_sum = 0;
+            n = 0;
+            re = 0;
+            //Serial.println(i);
+            i++;
+            if (i >= reps){ //End of set shows all data -- Create some kind of switch that tells the device how many repts 1 - 3 - 5
+              i = 0;
+              // oled.setCursor(50,0);
+              // oled.println((avg_vel_finished[0] +avg_vel_finished[1] +avg_vel_finished[2])/3);
+              // 
+              float t = 0;
+              // for(int p = 0; p < reps; p++){
+              //   Serial.print("VEL");
+              //   Serial.print(p + 1);
+              //   Serial.print(": ");
+              //   Serial.println(avg_vel_finished[p]);
+              //   // Serial.print("Your AVG ROM");
+              //   // Serial.print(p + 1);
+              //   // Serial.print(":   ");
+              //   // Serial.println(avgROM);
+
+              //   t = t + avg_vel_finished[p];
+              // } 
+              // Serial.print("SETAVG: ");
+              // Serial.print(t/reps);
+              //Serial.println(" M/S");
+
+              
+              delay(60000);
+              
+              //final_stats();
+              // oled.clear();
+              // oled.set2X();
+              // oled.setCursor(0,0);
+              // oled.println("ACV:");
+              // oled.setCursor(50,0);
+              // oled.println((avg_vel_finished[0] +avg_vel_finished[1] +avg_vel_finished[2])/3);
+              // oled.print(avg_vel_finished[0]);
+              // oled.println(" M/S");
+              // oled.print(avg_vel_finished[1]);
+              // oled.println(" M/S");
+              // oled.print(avg_vel_finished[2]);
+              // oled.println(" M/S");
+              // 
+              // delay(50000);
+
+              // oled.setCursor(0,0);
+              // oled.clear();
+              // oled.println("ACV:");
+              //  
+            }
+            //Serial.println("start_rep");
+              digitalWrite(7, HIGH); //Set the voltage to high and makes a noise
+              delay(500);
+              digitalWrite(7, LOW);//Sets the voltage to low and makes no noise
+      } else {
+              n = 0;
+              myArray[1] = 0;
+              myArray[2]= 0;
+              vel_sum = 0;
+              rom[0] = as5600.getCumulativePosition();
+              repTime[0] = micros();
+              re = 0;
+      }
+    } 
+//-------------------------------------------- end
+    
+} 
+}
+
+void init_settings() {
+  oled.set2X();
+  //oled.invertoled(true);
+  oled.setCursor(0, 0);
+  oled.println("Ari Aks's");
+  oled.print("Velocity Tracker");
+   
+  //oled.startscrollleft(0, 0);
+  delay(300);
+  //oled.stopscroll();
+
+  // int val = digitalRead(confirm_button);
+  // Serial.println(val);
+  //  if(val == HIGH){
+  //   Serial.println(val);
+  //  }
+}
+
+void final_stats() {
+  for(int i = 0; i < 100; i++){
+    Serial.println(digitalRead(potPin));
+    oled.clear();
+    if(digitalRead(potPin) > .9) {
+      oled.set2X();
+      oled.setCursor(0,0);
+      oled.println("ACV:");
+      oled.setCursor(50,0);
+      oled.println((avg_vel_finished[0] +avg_vel_finished[1] +avg_vel_finished[2])/3);
+      oled.print(avg_vel_finished[0]);
+      oled.println(" M/S");
+      oled.print(avg_vel_finished[1]);
+      oled.println(" M/S");
+      oled.print(avg_vel_finished[2]);
+      oled.println(" M/S");
+      
+      delay(500);
+    } else {
+        oled.clear();
+        oled.set1X();
+        oled.setCursor(0, 0);
+        oled.println("ROM DATA");
+        oled.println("The average rom is:");
+        oled.print(avgROM);
+         
+        delay(500);
+    }
+  }
+
+
+  
+}
