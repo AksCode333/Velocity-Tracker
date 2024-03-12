@@ -48,26 +48,35 @@ def kg_or_lb(value):
 def delete_rep(rep_num):
     print("deleted rep ", rep_num)
     if rep_num == 1:  
-        rep1_vel_value.set("0")
+        rep1_vel_value.set("VEL: N/A")
+        rep1_rom_value.set("ROM: N/A")
     if rep_num == 2:
-        rep2_vel_value.set("0")
-        print("teST")
+        rep2_vel_value.set("VEL: N/A")
+        rep2_rom_value.set("ROM: N/A")
     if rep_num == 3:
-        rep3_vel_value.set("0")
+        rep3_vel_value.set("VEL: N/A")
+        rep3_rom_value.set("ROM: N/A")
     if rep_num == 4:
-        rep4_vel_value.set("0")
+        rep4_vel_value.set("VEL: N/A")
+        rep4_rom_value.set("ROM: N/A")
     if rep_num == 5:
-        rep5_vel_value.set("0")
+        rep5_vel_value.set("VEL: N/A")
+        rep5_rom_value.set("ROM: N/A")
     if rep_num == 6:
-        rep6_vel_value.set("0")
+        rep6_vel_value.set("VEL: N/A")
+        rep6_rom_value.set("ROM: N/A")
     if rep_num == 7:
-        rep7_vel_value.set("0")
+        rep7_vel_value.set("VEL: N/A")
+        rep7_rom_value.set("ROM: N/A")
     if rep_num == 8:
-        rep8_vel_value.set("0")
+        rep8_vel_value.set("VEL: N/A")
+        rep8_rom_value.set("ROM: N/A")
     if rep_num == 9:
-        rep9_vel_value.set("0")
+        rep9_vel_value.set("VEL: N/A")
+        rep9_rom_value.set("ROM: N/A")
     if rep_num == 10:
-        rep10_vel_value.set("0")
+        rep10_vel_value.set("VEL: N/A")
+        rep10_rom_value.set("ROM: N/A")
 
     # vel_list = []
     # # print(number_of_reps)
@@ -75,7 +84,7 @@ def delete_rep(rep_num):
     # vel_list.append(rep1_vel_value.set("0"))
 #retrieve the data from the arduino
 def get_data():
-    SERIAL_PORT = '/dev/cu.usbserial-14310'
+    SERIAL_PORT = 'COM3'
     BAUD_RATE = 115200
     ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
     def read_and_process_data():
@@ -84,6 +93,7 @@ def get_data():
 
         rep_value.append(str(sensorValues[0]))
         vel.append(float(sensorValues[1]))
+        rom.append(float(sensorValues[2]))
         
         # k = 0
         # for i in vel:
@@ -95,53 +105,72 @@ def get_data():
     while(len(rep_value) < number_of_reps):
         read_and_process_data()
     if(len(rep_value) >= number_of_reps):
-        organize_data(rep_value, vel, number_of_reps)
+        organize_data(rep_value, vel, number_of_reps, rom)
 #oranize the data and send it out to display\
 
-def organize_data(number, velocity, nor):
+def organize_data(number, velocity, nor, rom):
     print(velocity)
     print(nor)
     if nor > 0:  
         rep1_vel_value.set("AVG VEL: " + str(velocity[0]))
+        rep1_rom_value.set("ROM: " + str(rom[0]))
     else:
-        rep1_vel_value.set("0")
+        rep1_vel_value.set("VEL: N/A")
+        rep1_rom_value.set("ROM: N/A")
     if nor > 1:
         rep2_vel_value.set("AVG VEL: " + str(velocity[1]))
+        rep2_rom_value.set("ROM: "+ str(rom[1]))
     else:
-        rep2_vel_value.set("0")
+        rep2_vel_value.set("VEL: N/A")
+        rep2_rom_value.set("ROM: N/A")
     if nor > 2:
         rep3_vel_value.set("AVG VEL: " + str(velocity[2]))
+        rep3_rom_value.set("ROM: " + str(rom[2]))
     else:
-        rep3_vel_value.set("0")
+        rep3_vel_value.set("VEL: N/A")
+        rep3_rom_value.set("ROM: N/A")
     if nor > 3:
         rep4_vel_value.set("AVG VEL: " + str(velocity[3]))
+        rep4_rom_value.set("ROM: " + str(rom[3]))
     else:
-        rep4_vel_value.set("0")
+        rep4_vel_value.set("VEL: N/A")
+        rep4_rom_value.set("ROM: N/A")
     if nor > 4:
         rep5_vel_value.set("AVG VEL: " + str(velocity[4]))
+        rep5_rom_value.set("ROM: " + str(rom[4]))
     else:
-        rep5_vel_value.set("0")
+        rep5_vel_value.set("VEL: N/A")
+        rep5_rom_value.set("ROM: N/A")
     if nor > 5:
         rep6_vel_value.set("AVG VEL: " + str(velocity[5]))
+        rep6_rom_value.set("ROM: " + str(rom[5]))
     else:
-        rep6_vel_value.set("0")
+        rep6_vel_value.set("VEL: N/A")
+        rep6_rom_value.set("ROM: N/A")
     if nor > 6:
         rep7_vel_value.set("AVG VEL: " + str(velocity[6]))
+        rep7_rom_value.set("ROM: " + str(rom[6]))
     else:
-        rep7_vel_value.set("0")
+        rep7_vel_value.set("VEL: N/A")
+        rep7_rom_value.set("ROM: N/A")
     if nor > 7:
         rep8_vel_value.set("AVG VEL: " + str(velocity[7]))
+        rep8_rom_value.set("ROM: " + str(rom[7]))
     else:
-        rep8_vel_value.set("0")
+        rep8_vel_value.set("VEL: N/A")
+        rep8_rom_value.set("ROM: N/A")
     if nor > 8:
         rep9_vel_value.set("AVG VEL: " + str(velocity[8]))
+        rep9_rom_value.set("ROM: " + str(rom[8]))
     else:
-        rep9_vel_value.set("0")
+        rep9_vel_value.set("VEL: N/A")
+        rep9_rom_value.set("ROM: N/A")
     if nor > 9:
         rep10_vel_value.set("AVG VEL: " + str(velocity[9]))
+        rep10_rom_value.set("ROM: " + str(rom[9]))
     else:
-        rep10_vel_value.set("0")
-
+        rep10_vel_value.set("VEL: N/A")
+        rep10_rom_value.set("ROM: N/A")
     for x in range(nor):
         print(number[x], ",", velocity[x])
     global number_of_reps
@@ -150,48 +179,89 @@ def organize_data(number, velocity, nor):
 def finalize_data():
     blank = rep5_vel_value.get()
     FINAL_VELOCITIES = []
-    if str(rep1_vel_value.get()) != "0" and rep1_vel_value.get() != blank:  
+    FINAL_ROMS = []
+    if str(rep1_vel_value.get()) != "0" and rep1_vel_value.get() != "VEL: N/A":  
         x1 = rep1_vel_value.get()
         x1 = x1.split(': ')
         FINAL_VELOCITIES.append(float(x1[1]))
-    if str(rep2_vel_value.get()) != "0"and rep2_vel_value.get() != blank:  
+        x = rep1_rom_value.get()
+        x = x.split(': ')
+        FINAL_ROMS.append(float(x[1]))
+
+    if str(rep2_vel_value.get()) != "0"and rep2_vel_value.get() != "VEL: N/A":  
         x2 = rep2_vel_value.get()
         x2 = x2.split(': ')
         FINAL_VELOCITIES.append(float(x2[1]))
-    if str(rep3_vel_value.get()) != "0"and rep3_vel_value.get() != blank:  
+        x = rep2_rom_value.get()
+        x = x.split(': ')
+        FINAL_ROMS.append(float(x[1]))
+
+    if str(rep3_vel_value.get()) != "0"and rep3_vel_value.get() != "VEL: N/A":  
         x3 = rep3_vel_value.get()
         x3 = x3.split(': ')
         FINAL_VELOCITIES.append(float(x3[1]))
-    if str(rep4_vel_value.get()) != "0" and rep4_vel_value.get() != blank:  
+        x = rep3_rom_value.get()
+        x = x.split(': ')
+        FINAL_ROMS.append(float(x[1]))
+
+    if str(rep4_vel_value.get()) != "0" and rep4_vel_value.get() != "VEL: N/A":  
         x3 = rep4_vel_value.get()
         x3 = x3.split(': ')
         FINAL_VELOCITIES.append(float(x3[1]))
-    if str(rep5_vel_value.get()) != "0":  
+        x = rep4_rom_value.get()
+        x = x.split(': ')
+        FINAL_ROMS.append(float(x[1]))
+
+    if str(rep5_vel_value.get()) != "VEL: N/A":  
         print("its not working")
         x3 = rep5_vel_value.get()
         x3 = x3.split(': ')
         FINAL_VELOCITIES.append(float(x3[1]))
-    if str(rep6_vel_value.get()) != "0" and rep6_vel_value.get() != "":  
+        x = rep5_rom_value.get()
+        x = x.split(': ')
+        FINAL_ROMS.append(float(x[1]))
+
+    if str(rep6_vel_value.get()) != "0" and rep6_vel_value.get() != "VEL: N/A":  
         x3 = rep6_vel_value.get()
         x3 = x3.split(': ')
         FINAL_VELOCITIES.append(float(x3[1]))
-    if str(rep7_vel_value.get()) != "0" and rep7_vel_value.get() != "":  
+        x = rep6_rom_value.get()
+        x = x.split(': ')
+        FINAL_ROMS.append(float(x[1]))
+
+    if str(rep7_vel_value.get()) != "VEL: N/A" and rep7_vel_value.get() != "":  
         print("rep 7 is ", str(rep7_vel_value.get()))
         x3 = rep7_vel_value.get()
         x3 = x3.split(': ')
         FINAL_VELOCITIES.append(float(x3[1]))
-    if str(rep8_vel_value.get()) != "0" and rep8_vel_value.get() != "":  
+        x = rep7_rom_value.get()
+        x = x.split(': ')
+        FINAL_ROMS.append(float(x[1]))
+
+    if str(rep8_vel_value.get()) != "0" and rep8_vel_value.get() != "VEL: N/A":  
         x3 = rep8_vel_value.get()
         x3 = x3.split(': ')
         FINAL_VELOCITIES.append(float(x3[1]))
-    if str(rep9_vel_value.get()) != "0" and rep9_vel_value.get() != "":  
+        x = rep8_rom_value.get()
+        x = x.split(': ')
+        FINAL_ROMS.append(float(x[1]))
+
+    if str(rep9_vel_value.get()) != "0" and rep9_vel_value.get() != "VEL: N/A":  
         x3 = rep9_vel_value.get()
         x3 = x3.split(': ')
         FINAL_VELOCITIES.append(float(x3[1]))
-    if str(rep10_vel_value.get()) != "0" and rep10_vel_value.get() != "":  
+        x = rep9_rom_value.get()
+        x = x.split(': ')
+        FINAL_ROMS.append(float(x[1]))
+
+    if str(rep10_vel_value.get()) != "0" and rep10_vel_value.get() != "VEL: N/A":  
         x3 = rep10_vel_value.get()
         x3 = x3.split(': ')
         FINAL_VELOCITIES.append(float(x3[1]))
+        x = rep10_rom_value.get()
+        x = x.split(': ')
+        FINAL_ROMS.append(float(x[1]))
+
     # if rep10_vel_value.get() != "0":  
     #     x3 = rep10_vel_value.get()
     #     x3 = x3.split(': ')
@@ -203,12 +273,22 @@ def finalize_data():
     print("the lift was: ", shared_variable)
 
     send_to_sheet = [formatted_date, shared_variable, weight_entry.get(), len(FINAL_VELOCITIES), sum(FINAL_VELOCITIES)/len(FINAL_VELOCITIES)]
+    for i in FINAL_VELOCITIES: #add all the reps to the google sheet
+        send_to_sheet.append(i)
+    while len(send_to_sheet) < 15: #adds in the blank ones so that I can keep adding to the google sehets past the resp
+        send_to_sheet.append("")
+    for i in FINAL_ROMS:
+        send_to_sheet.append(i)
+    while len(send_to_sheet) < 25:
+        send_to_sheet.append("")
+
     sheet.insert_row(send_to_sheet, 2)
 
 
 #Random Variables
 rep_value = []
 vel = []
+rom = []
 # Initialize the main Tkinter window
 root = tk.Tk()
 root.geometry("950x800")
@@ -246,6 +326,27 @@ rep9_vel_value = 0
 rep9_vel_value = tk.StringVar()
 rep10_vel_value = 0
 rep10_vel_value = tk.StringVar()
+#all rom values
+rep1_rom_value = 0
+rep1_rom_value = tk.StringVar()
+rep2_rom_value = 0
+rep2_rom_value = tk.StringVar()
+rep3_rom_value = 0
+rep3_rom_value = tk.StringVar()
+rep4_rom_value = 0
+rep4_rom_value = tk.StringVar()
+rep5_rom_value = 0
+rep5_rom_value = tk.StringVar()
+rep6_rom_value = 0
+rep6_rom_value = tk.StringVar()
+rep7_rom_value = 0
+rep7_rom_value = tk.StringVar()
+rep8_rom_value = 0
+rep8_rom_value = tk.StringVar()
+rep9_rom_value = 0
+rep9_rom_value = tk.StringVar()
+rep10_rom_value = 0
+rep10_rom_value = tk.StringVar()
 # Create a text box (entry widget) that displays the shared variable
 #Create a frame to push all of the other info into the center
 frame = ttk.Frame(root,borderwidth=5, relief="sunken",padding= 1)
@@ -331,7 +432,7 @@ rep1 = ttk.Frame(results, borderwidth=5, relief="sunken",padding= 1)
 rep1.grid(row=5, column=1, rowspan=2, pady=10, padx=5)
 rep1_vel = ttk.Label(rep1, textvariable=(rep1_vel_value), width=20)
 rep1_vel.grid(row=1, column=1)
-rep1_rom = ttk.Label(rep1, text = "ROM = ", width=20)
+rep1_rom = ttk.Label(rep1, textvariable=(rep1_rom_value), width=20)
 rep1_rom.grid(row=2, column=1)
 rep1_time = ttk.Label(rep1, text = "TIME = ", width=20)
 rep1_time.grid(row=3, column=1)
@@ -345,7 +446,7 @@ rep2 = ttk.Frame(results, borderwidth=5, relief="sunken",padding= 1)
 rep2.grid(row=5, column=2, rowspan=2, pady=10, padx=5)
 rep2_vel = ttk.Label(rep2, textvariable=rep2_vel_value, width=20)
 rep2_vel.grid(row=1, column=1)
-rep2_rom = ttk.Label(rep2, text = "ROM = ", width=20)
+rep2_rom = ttk.Label(rep2, textvariable=(rep2_rom_value), width=20)
 rep2_rom.grid(row=2, column=1)
 rep2_time = ttk.Label(rep2, text = "TIME = ", width=20)
 rep2_time.grid(row=3, column=1)
@@ -359,7 +460,7 @@ rep3 = ttk.Frame(results, borderwidth=5, relief="sunken",padding= 1)
 rep3.grid(row=5, column=3, rowspan=2, pady=10, padx=5)
 rep3_vel = ttk.Label(rep3, textvariable=rep3_vel_value, width=20)
 rep3_vel.grid(row=1, column=1)
-rep3_rom = ttk.Label(rep3, text = "ROM = ", width=20)
+rep3_rom = ttk.Label(rep3, textvariable=(rep3_rom_value), width=20)
 rep3_rom.grid(row=2, column=1)
 rep3_time = ttk.Label(rep3, text = "TIME = ", width=20)
 rep3_time.grid(row=3, column=1)
@@ -373,7 +474,7 @@ rep4 = ttk.Frame(results, borderwidth=5, relief="sunken",padding= 1)
 rep4.grid(row=5, column=4, rowspan=2, pady=10, padx=5)
 rep4_vel = ttk.Label(rep4,textvariable=rep4_vel_value, width=20)
 rep4_vel.grid(row=1, column=1)
-rep4_rom = ttk.Label(rep4, text = "ROM = ", width=20)
+rep4_rom = ttk.Label(rep4,textvariable=(rep4_rom_value), width=20)
 rep4_rom.grid(row=2, column=1)
 rep4_time = ttk.Label(rep4, text = "TIME = ", width=20)
 rep4_time.grid(row=3, column=1)
@@ -387,7 +488,7 @@ rep5 = ttk.Frame(results, borderwidth=5, relief="sunken",padding= 1)
 rep5.grid(row=5, column=5, rowspan=2, pady=10, padx=5)
 rep5_vel = ttk.Label(rep5, textvariable=rep5_vel_value, width=20)
 rep5_vel.grid(row=1, column=1)
-rep5_rom = ttk.Label(rep5, text = "ROM = ", width=20)
+rep5_rom = ttk.Label(rep5,textvariable=(rep5_rom_value), width=20)
 rep5_rom.grid(row=2, column=1)
 rep5_time = ttk.Label(rep5, text = "TIME = ", width=20)
 rep5_time.grid(row=3, column=1)
@@ -400,7 +501,7 @@ rep6 = ttk.Frame(results, borderwidth=5, relief="sunken",padding= 1)
 rep6.grid(row=7, column=1, rowspan=2, pady=10, padx=5)
 rep6_vel = ttk.Label(rep6,textvariable=rep6_vel_value, width=20)
 rep6_vel.grid(row=1, column=1)
-rep6_rom = ttk.Label(rep6, text = "ROM = ", width=20)
+rep6_rom = ttk.Label(rep6, textvariable=(rep6_rom_value), width=20)
 rep6_rom.grid(row=2, column=1)
 rep6_time = ttk.Label(rep6, text = "TIME = ", width=20)
 rep6_time.grid(row=3, column=1)
@@ -413,7 +514,7 @@ rep7 = ttk.Frame(results, borderwidth=5, relief="sunken",padding= 1)
 rep7.grid(row=7, column=2, rowspan=2, pady=10, padx=5)
 rep7_vel = ttk.Label(rep7,textvariable=rep7_vel_value, width=20)
 rep7_vel.grid(row=1, column=1)
-rep7_rom = ttk.Label(rep7, text = "ROM = ", width=20)
+rep7_rom = ttk.Label(rep7, textvariable=(rep7_rom_value), width=20)
 rep7_rom.grid(row=2, column=1)
 rep7_time = ttk.Label(rep7, text = "TIME = ", width=20)
 rep7_time.grid(row=3, column=1)
@@ -426,7 +527,7 @@ rep8 = ttk.Frame(results, borderwidth=5, relief="sunken",padding= 1)
 rep8.grid(row=7, column=3, rowspan=2, pady=10, padx=5)
 rep8_vel = ttk.Label(rep8,textvariable=rep8_vel_value, width=20)
 rep8_vel.grid(row=1, column=1)
-rep8_rom = ttk.Label(rep8, text = "ROM = ", width=20)
+rep8_rom = ttk.Label(rep8,textvariable=(rep8_rom_value), width=20)
 rep8_rom.grid(row=2, column=1)
 rep8_time = ttk.Label(rep8, text = "TIME = ", width=20)
 rep8_time.grid(row=3, column=1)
@@ -439,7 +540,7 @@ rep9 = ttk.Frame(results, borderwidth=5, relief="sunken",padding= 1)
 rep9.grid(row=7, column=4, rowspan=2, pady=10, padx=5)
 rep9_vel = ttk.Label(rep9,textvariable=rep9_vel_value, width=20)
 rep9_vel.grid(row=1, column=1)
-rep9_rom = ttk.Label(rep9, text = "ROM = ", width=20)
+rep9_rom = ttk.Label(rep9, textvariable=(rep9_rom_value), width=20)
 rep9_rom.grid(row=2, column=1)
 rep9_time = ttk.Label(rep9, text = "TIME = ", width=20)
 rep9_time.grid(row=3, column=1)
@@ -452,7 +553,7 @@ rep10 = ttk.Frame(results, borderwidth=5, relief="sunken",padding= 1)
 rep10.grid(row=7, column=5, rowspan=2, pady=10, padx=5)
 rep10_vel = ttk.Label(rep10,textvariable=rep10_vel_value, width=20)
 rep10_vel.grid(row=1, column=1)
-rep10_rom = ttk.Label(rep10, text = "ROM = ", width=20)
+rep10_rom = ttk.Label(rep10,textvariable=(rep10_rom_value), width=20)
 rep10_rom.grid(row=2, column=1)
 rep10_time = ttk.Label(rep10, text = "TIME = ", width=20)
 rep10_time.grid(row=3, column=1)
