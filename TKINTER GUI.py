@@ -84,6 +84,7 @@ def delete_rep(rep_num):
     # vel_list.append(rep1_vel_value.set("0"))
 #retrieve the data from the arduino
 def get_data():
+    time = []
     SERIAL_PORT = 'COM3'
     BAUD_RATE = 115200
     ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
@@ -94,7 +95,7 @@ def get_data():
         rep_value.append(str(sensorValues[0]))
         vel.append(float(sensorValues[1]))
         rom.append(float(sensorValues[2]))
-        
+        time.append(float(sensorValues[3]))
         # k = 0
         # for i in vel:
         #     vel_list.append(vel[k])
@@ -105,16 +106,16 @@ def get_data():
     while(len(rep_value) < number_of_reps):
         read_and_process_data()
     if(len(rep_value) >= number_of_reps):
-        organize_data(rep_value, vel, number_of_reps, rom)
+        organize_data(rep_value, vel, number_of_reps, rom, time)
 #oranize the data and send it out to display\
 
-def organize_data(number, velocity, nor, rom):
+def organize_data(number, velocity, nor, rom, time):
     print(velocity)
     print(nor)
     if nor > 0:  
         rep1_vel_value.set("AVG VEL: " + str(velocity[0]))
         rep1_rom_value.set("ROM: " + str(rom[0]))
-        # rep1_time_value.set("TIME: " + str(time[0]))
+        rep1_time_value.set("TIME: " + str(time[0]))
     else:
         rep1_vel_value.set("VEL: N/A")
         rep1_rom_value.set("ROM: N/A")
@@ -122,7 +123,7 @@ def organize_data(number, velocity, nor, rom):
     if nor > 1:
         rep2_vel_value.set("AVG VEL: " + str(velocity[1]))
         rep2_rom_value.set("ROM: "+ str(rom[1]))
-        # rep2_time_value.set("TIME: " + str(time[1]))
+        rep2_time_value.set("TIME: " + str(time[1]))
     else:
         rep2_vel_value.set("VEL: N/A")
         rep2_rom_value.set("ROM: N/A")
@@ -130,7 +131,7 @@ def organize_data(number, velocity, nor, rom):
     if nor > 2:
         rep3_vel_value.set("AVG VEL: " + str(velocity[2]))
         rep3_rom_value.set("ROM: " + str(rom[2]))
-        # rep3_time_value.set("TIME: " + str(time[2]))
+        rep3_time_value.set("TIME: " + str(time[2]))
     else:
         rep3_vel_value.set("VEL: N/A")
         rep3_rom_value.set("ROM: N/A")
@@ -138,7 +139,7 @@ def organize_data(number, velocity, nor, rom):
     if nor > 3:
         rep4_vel_value.set("AVG VEL: " + str(velocity[3]))
         rep4_rom_value.set("ROM: " + str(rom[3]))
-        # rep4_time_value.set("TIME: " + str(time[3]))
+        rep4_time_value.set("TIME: " + str(time[3]))
     else:
         rep4_vel_value.set("VEL: N/A")
         rep4_rom_value.set("ROM: N/A")
@@ -146,7 +147,7 @@ def organize_data(number, velocity, nor, rom):
     if nor > 4:
         rep5_vel_value.set("AVG VEL: " + str(velocity[4]))
         rep5_rom_value.set("ROM: " + str(rom[4]))
-        # rep5_time_value.set("TIME: " + str(time[4]))
+        rep5_time_value.set("TIME: " + str(time[4]))
     else:
         rep5_vel_value.set("VEL: N/A")
         rep5_rom_value.set("ROM: N/A")
@@ -154,7 +155,7 @@ def organize_data(number, velocity, nor, rom):
     if nor > 5:
         rep6_vel_value.set("AVG VEL: " + str(velocity[5]))
         rep6_rom_value.set("ROM: " + str(rom[5]))
-        # rep6_time_value.set("TIME: " + str(time[5]))
+        rep6_time_value.set("TIME: " + str(time[5]))
     else:
         rep6_vel_value.set("VEL: N/A")
         rep6_rom_value.set("ROM: N/A")
@@ -162,7 +163,7 @@ def organize_data(number, velocity, nor, rom):
     if nor > 6:
         rep7_vel_value.set("AVG VEL: " + str(velocity[6]))
         rep7_rom_value.set("ROM: " + str(rom[6]))
-        # rep7_time_value.set("TIME: " + str(time[6]))
+        rep7_time_value.set("TIME: " + str(time[6]))
     else:
         rep7_vel_value.set("VEL: N/A")
         rep7_rom_value.set("ROM: N/A")
@@ -170,7 +171,7 @@ def organize_data(number, velocity, nor, rom):
     if nor > 7:
         rep8_vel_value.set("AVG VEL: " + str(velocity[7]))
         rep8_rom_value.set("ROM: " + str(rom[7]))
-        # rep8_time_value.set("TIME: " + str(time[7]))
+        rep8_time_value.set("TIME: " + str(time[7]))
     else:
         rep8_vel_value.set("VEL: N/A")
         rep8_rom_value.set("ROM: N/A")
@@ -178,7 +179,7 @@ def organize_data(number, velocity, nor, rom):
     if nor > 8:
         rep9_vel_value.set("AVG VEL: " + str(velocity[8]))
         rep9_rom_value.set("ROM: " + str(rom[8]))
-        # rep9_time_value.set("TIME: " + str(time[8]))
+        rep9_time_value.set("TIME: " + str(time[8]))
     else:
         rep9_vel_value.set("VEL: N/A")
         rep9_rom_value.set("ROM: N/A")
@@ -186,7 +187,7 @@ def organize_data(number, velocity, nor, rom):
     if nor > 9:
         rep10_vel_value.set("AVG VEL: " + str(velocity[9]))
         rep10_rom_value.set("ROM: " + str(rom[9]))
-        # rep10_time_value.set("TIME: " + str(time[9]))
+        rep10_time_value.set("TIME: " + str(time[9]))
     else:
         rep10_vel_value.set("VEL: N/A")
         rep10_rom_value.set("ROM: N/A")
@@ -331,6 +332,10 @@ def finalize_data():
     for i in FINAL_ROMS:
         send_to_sheet.append(i)
     while len(send_to_sheet) < 25:
+        send_to_sheet.append("")
+    for i in FINAL_TIMES:
+        send_to_sheet.append(i)
+    while len(send_to_sheet) < 35:
         send_to_sheet.append("")
 
     sheet.insert_row(send_to_sheet, 2)
