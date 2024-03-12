@@ -200,6 +200,7 @@ def finalize_data():
     blank = rep5_vel_value.get()
     FINAL_VELOCITIES = []
     FINAL_ROMS = []
+    FINAL_TIMES = []
     if str(rep1_vel_value.get()) != "0" and rep1_vel_value.get() != "VEL: N/A":  
         x1 = rep1_vel_value.get()
         x1 = x1.split(': ')
@@ -207,6 +208,9 @@ def finalize_data():
         x = rep1_rom_value.get()
         x = x.split(': ')
         FINAL_ROMS.append(float(x[1]))
+        t = rep1_time_value.get()
+        t = t.split(': ')
+        FINAL_TIMES.append(float(t[1]))
 
     if str(rep2_vel_value.get()) != "0"and rep2_vel_value.get() != "VEL: N/A":  
         x2 = rep2_vel_value.get()
@@ -215,6 +219,9 @@ def finalize_data():
         x = rep2_rom_value.get()
         x = x.split(': ')
         FINAL_ROMS.append(float(x[1]))
+        t = rep2_time_value.get()
+        t = t.split(': ')
+        FINAL_TIMES.append(float(t[1]))
 
     if str(rep3_vel_value.get()) != "0"and rep3_vel_value.get() != "VEL: N/A":  
         x3 = rep3_vel_value.get()
@@ -223,6 +230,9 @@ def finalize_data():
         x = rep3_rom_value.get()
         x = x.split(': ')
         FINAL_ROMS.append(float(x[1]))
+        t = rep3_time_value.get()
+        t = t.split(': ')
+        FINAL_TIMES.append(float(t[1]))
 
     if str(rep4_vel_value.get()) != "0" and rep4_vel_value.get() != "VEL: N/A":  
         x3 = rep4_vel_value.get()
@@ -231,6 +241,9 @@ def finalize_data():
         x = rep4_rom_value.get()
         x = x.split(': ')
         FINAL_ROMS.append(float(x[1]))
+        t = rep4_time_value.get()
+        t = t.split(': ')
+        FINAL_TIMES.append(float(t[1]))
 
     if str(rep5_vel_value.get()) != "VEL: N/A":  
         print("its not working")
@@ -240,6 +253,9 @@ def finalize_data():
         x = rep5_rom_value.get()
         x = x.split(': ')
         FINAL_ROMS.append(float(x[1]))
+        t = rep5_time_value.get()
+        t = t.split(': ')
+        FINAL_TIMES.append(float(t[1]))
 
     if str(rep6_vel_value.get()) != "0" and rep6_vel_value.get() != "VEL: N/A":  
         x3 = rep6_vel_value.get()
@@ -248,6 +264,9 @@ def finalize_data():
         x = rep6_rom_value.get()
         x = x.split(': ')
         FINAL_ROMS.append(float(x[1]))
+        t = rep6_time_value.get()
+        t = t.split(': ')
+        FINAL_TIMES.append(float(t[1]))
 
     if str(rep7_vel_value.get()) != "VEL: N/A" and rep7_vel_value.get() != "":  
         print("rep 7 is ", str(rep7_vel_value.get()))
@@ -257,6 +276,9 @@ def finalize_data():
         x = rep7_rom_value.get()
         x = x.split(': ')
         FINAL_ROMS.append(float(x[1]))
+        t = rep7_time_value.get()
+        t = t.split(': ')
+        FINAL_TIMES.append(float(t[1]))
 
     if str(rep8_vel_value.get()) != "0" and rep8_vel_value.get() != "VEL: N/A":  
         x3 = rep8_vel_value.get()
@@ -265,6 +287,9 @@ def finalize_data():
         x = rep8_rom_value.get()
         x = x.split(': ')
         FINAL_ROMS.append(float(x[1]))
+        t = rep8_time_value.get()
+        t = t.split(': ')
+        FINAL_TIMES.append(float(t[1]))
 
     if str(rep9_vel_value.get()) != "0" and rep9_vel_value.get() != "VEL: N/A":  
         x3 = rep9_vel_value.get()
@@ -273,6 +298,9 @@ def finalize_data():
         x = rep9_rom_value.get()
         x = x.split(': ')
         FINAL_ROMS.append(float(x[1]))
+        t = rep9_time_value.get()
+        t = t.split(': ')
+        FINAL_TIMES.append(float(t[1]))
 
     if str(rep10_vel_value.get()) != "0" and rep10_vel_value.get() != "VEL: N/A":  
         x3 = rep10_vel_value.get()
@@ -281,6 +309,9 @@ def finalize_data():
         x = rep10_rom_value.get()
         x = x.split(': ')
         FINAL_ROMS.append(float(x[1]))
+        t = rep10_time_value.get()
+        t = t.split(': ')
+        FINAL_TIMES.append(float(t[1]))
 
     # if rep10_vel_value.get() != "0":  
     #     x3 = rep10_vel_value.get()
