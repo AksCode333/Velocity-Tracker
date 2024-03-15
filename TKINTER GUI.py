@@ -85,7 +85,7 @@ def delete_rep(rep_num):
 #retrieve the data from the arduino
 def get_data():
     time = []
-    SERIAL_PORT = 'COM3'
+    SERIAL_PORT = '/dev/cu.usbserial-14310'
     BAUD_RATE = 115200
     ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
     def read_and_process_data():
@@ -359,8 +359,9 @@ kglb = ""
 # Create a StringVar to update the text box
 text_var = tk.StringVar()
 text_var.set(shared_variable)
+number_var = 10
 number_var = tk.IntVar()
-number_var.set(rep_num)
+number_var.set(10)
 #ALL REP VALUES -------------
 rep1_vel_value = 0
 rep1_vel_value = tk.StringVar()
