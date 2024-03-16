@@ -85,7 +85,7 @@ def delete_rep(rep_num):
 #retrieve the data from the arduino
 def get_data():
     time = []
-    SERIAL_PORT = '/dev/cu.usbserial-14310'
+    SERIAL_PORT = 'COM3'
     BAUD_RATE = 115200
     ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
     def read_and_process_data():
@@ -340,7 +340,67 @@ def finalize_data():
 
     sheet.insert_row(send_to_sheet, 2)
 
+def validate_data():
+    if str(rep1_vel_value.get()) != "0":  
+        x1 = rep1_vel_value.get()
+        x1 = x1.split(': ')
+        if(x1[1] < .2):
+            delete_rep(1)
 
+    if str(rep2_vel_value.get()) != "0":  
+        x1 = rep2_vel_value.get()
+        x1 = x1.split(': ')
+        if(x1[1] < .2):
+            delete_rep(2)
+
+    if str(rep3_vel_value.get()) != "0":  
+        x1 = rep3_vel_value.get()
+        x1 = x1.split(': ')
+        if(x1[1] < .2):
+            delete_rep(3)
+            
+    if str(rep4_vel_value.get()) != "0":  
+        x1 = rep4_vel_value.get()
+        x1 = x1.split(': ')
+        if(x1[1] < .2):
+            delete_rep(4)
+            
+    if str(rep5_vel_value.get()) != "poop":  
+        x1 = rep5_vel_value.get()
+        x1 = x1.split(': ')
+        if(x1[1] < .2):
+            delete_rep(5)
+            
+    if str(rep6_vel_value.get()) != "0" :  
+        x1 = rep6_vel_value.get()
+        x1 = x1.split(': ')
+        if(x1[1] < .2):
+            delete_rep(6)
+            
+    if str(rep7_vel_value.get()) != "VEL: N/A":  
+        x1 = rep7_vel_value.get()
+        x1 = x1.split(': ')
+        if(x1[1] < .2):
+            delete_rep(7)
+            
+    if str(rep8_vel_value.get()) != "0" :  
+        x1 = rep8_vel_value.get()
+        x1 = x1.split(': ')
+        if(x1[1] < .2):
+            delete_rep(8)
+            
+    if str(rep9_vel_value.get()) != "0" :  
+        x1 = rep9_vel_value.get()
+        x1 = x1.split(': ')
+        if(x1[1] < .2):
+            delete_rep(9)
+            
+    if str(rep10_vel_value.get()) != "0":  
+        x1 = rep10_vel_value.get()
+        x1 = x1.split(': ')
+        if(x1[1] < .2):
+            delete_rep(10)
+            
 #Random Variables
 rep_value = []
 vel = []
@@ -643,12 +703,13 @@ rep10_delete.grid(row=5, column=1)
 start_outline = ttk.Frame(root, borderwidth=5, relief="raised")
 start_outline.grid(row=9, column=0, columnspan=2)
 start_button = ttk.Button(start_outline, text="START", command=lambda: get_data(), padding=10,width=100)
-start_button.grid(row=1, column=1)
+start_button.grid(row=1, column=1,columnspan=2, pady=5)
 #FINALIZE DATA
-final = ttk.Frame(root, borderwidth= 5, relief="raised")
-final.grid(row=10, column=0,pady=10,columnspan=2)
-finish = ttk.Button(final, text="SEND DATA", command=lambda: finalize_data(), padding=10,width=50)
-finish.grid(row=1,column=1)
+finish = ttk.Button(start_outline, text="SEND DATA", command=lambda: finalize_data(), padding=10,width=50)
+finish.grid(row=2,column=1, padx=5, pady=5)
+#Comb Data
+comb = ttk.Button(start_outline, text="Validate Data", command=lambda: validate_data(), padding=10,width=50)
+comb.grid(row=2,column=2, padx=5)
 
 # Start the Tkinter event loop
 # This is where the magic happens
