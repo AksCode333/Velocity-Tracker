@@ -1,0 +1,291 @@
+import tkinter as tk
+from tkinter import ttk
+import sv_ttk
+import serial
+import datetime
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+FINAL_VELOCITIES = []
+FINAL_ROMS = []
+FINAL_TIMES = []
+
+# Get the current date
+now = datetime.datetime.now()
+formatted_date = now.strftime("%m/%d/%y")
+
+#google sheets stuff
+scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/spreadsheets',"https://www.googleapis.com/auth/drive.file","https://www.googleapis.com/auth/drive"]
+creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
+client = gspread.authorize(creds)
+sheet = client.open("Fitness").sheet1
+
+def delete_rep(num):
+    print("deleted rep # ", num)
+    FINAL_VELOCITIES[num-1] = 0
+    FINAL_ROMS[num-1] = 0
+    FINAL_TIMES[num-1] = 0
+    print("the final vel", FINAL_VELOCITIES)
+    print("the final roms ", FINAL_ROMS)
+    print("the finali times", FINAL_TIMES)
+    
+# send the data to the sehet
+def finalize_data():
+    for i in FINAL_VELOCITIES:
+        if i == 0:
+            FINAL_VELOCITIES.remove(i)
+    for i in FINAL_ROMS:
+        if ImportError == 0:
+            FINAL_ROMS.remove(i)
+    for i in FINAL_TIMES:
+        if i == 0:
+            FINAL_TIMES.remove(i)
+    print("The fnial velocities were: ", FINAL_VELOCITIES)
+    print("there were ", len(FINAL_VELOCITIES), "reps")
+    print("The AVG set velocity was: ", sum(FINAL_VELOCITIES)/len(FINAL_VELOCITIES))
+    # print("The weight was: ",weight_entry.get()," ", kglb)
+    # print("the lift was: ", shared_variable)
+
+    send_to_sheet = [formatted_date, shared_variable, weight_entry.get(), len(FINAL_VELOCITIES), sum(FINAL_VELOCITIES)/len(FINAL_VELOCITIES), sum(FINAL_ROMS)/ len(FINAL_VELOCITIES), sum(FINAL_TIMES)/len(FINAL_ROMS)]
+    for i in FINAL_VELOCITIES: #add all the reps to the google sheet
+        send_to_sheet.append(i)
+    while len(send_to_sheet) < 17: #adds in the blank ones so that I can keep adding to the google sehets past the resp
+        send_to_sheet.append("")
+    for i in FINAL_ROMS:
+        send_to_sheet.append(i)
+    while len(send_to_sheet) < 27:
+        send_to_sheet.append("")
+    for i in FINAL_TIMES:
+        send_to_sheet.append(i)
+    while len(send_to_sheet) < 37:
+        send_to_sheet.append("")
+
+    sheet.insert_row(send_to_sheet, 2)
+
+check = [False]
+def should_check():
+    check[0] = True
+    print("go")
+    start_all()
+def shouldnt_check():
+    check[0] = False
+    print("stop")
+    print("the final vel", FINAL_VELOCITIES)
+    print("the final roms ", FINAL_ROMS)
+    print("the finali times", FINAL_TIMES)
+# Create the main window
+def start_all():
+    while(check[0] == True):
+        print("tests")
+        getData()
+        root.update()
+    else:
+        print("ITS IS NO")
+
+root = tk.Tk()
+root.title("Velocity tracker")
+
+# Set window size
+root.geometry("900x600")
+
+# Create a frame to hold the buttons
+button_frame = ttk.Frame(root)
+button_frame.pack(expand=True, side=tk.TOP)
+
+def kg_or_lb(value):
+    global kglb
+    kglb = value
+# Create and place the buttons within the frame
+button1 = ttk.Button(button_frame, text="Start Set",command=lambda: should_check(), padding=20)
+button1.grid(row=0, column=0, padx=50, pady=10)
+
+button2 = ttk.Button(button_frame, text="Pause Set",command=lambda: shouldnt_check(), padding=20)
+button2.grid(row=0, column=1, padx=50, pady=10)
+
+button3 = ttk.Button(button_frame, text="Reset", padding=20)
+button3.grid(row=0, column=2,  padx=50, pady=10)
+
+button4 = ttk.Button(button_frame, text="Send Data",command=lambda: finalize_data(), padding=20)
+button4.grid(row=0, column=3, padx=50, pady=10)
+
+#creates the widgets for enteringthe set data
+# Weight Choice
+DECIDER_frame = ttk.Frame(root,borderwidth=5, relief="sunken",padding= 1)
+DECIDER_frame.pack(expand=True, side=tk.TOP)
+weight_frame = ttk.Frame(button_frame,borderwidth=5, relief="sunken",padding= 1)
+weight_frame.grid(row=1, column=0, columnspan=2)
+weight_lab = ttk.Label(weight_frame, text="   Weight   ")
+weight_lab.grid(row=3, column=0, padx=10, pady=50)
+
+#Entry location
+weight_entry = ttk.Entry(weight_frame, width=40)
+weight_entry.grid(row=4, column=0,padx=15, pady=5,rowspan=1,columnspan=3)
+#buttons
+kg_button = ttk.Button(weight_frame, text="KG", command=lambda: kg_or_lb("KG"), padding=20)
+kg_button.grid(row=3, column=1)
+
+lb_button = ttk.Button(weight_frame, text="LB", command=lambda: kg_or_lb("LB"), padding=20)
+lb_button.grid(row=3, column=2)
+shared_variable = ""
+# Start the GUI event loop
+text_var = tk.StringVar()
+text_var.set(shared_variable)
+
+def update_text(value):
+    global shared_variable
+    shared_variable = value
+    text_var.set(shared_variable)  # Update the text box with the new value
+    
+#DO THE LIFT TYPE CHOCIEC
+#Create a frame to push all of the other info into the center
+frame = ttk.Frame(button_frame,borderwidth=5, relief="sunken",padding= 1)
+frame.grid(row=1, column=2,pady=10, padx=10, columnspan=2)
+
+text_box = ttk.Entry(frame, textvariable=text_var, state='readonly', width=30)
+text_box.grid(row=0, column=1, columnspan=3,padx=10, pady=10)
+
+# Create three buttons that update the shared variable with different values
+button1 = ttk.Button(frame, text="Bench", command=lambda: update_text('Bench'), padding=10)
+button1.grid(row=1, column=1)
+
+button2 = ttk.Button(frame, text="Squat", command=lambda: update_text('Squat'), padding=10)
+button2.grid(row=1, column=2)
+
+button3 = ttk.Button(frame, text="Deadlift", command=lambda: update_text('Deadlift'), padding=10)
+button3.grid(row=1, column=3, pady=10)
+
+liftcho = ttk.Label(frame, text="LIFT TYPE")
+liftcho.grid(row=0, column=0, padx=10, pady=40)
+
+
+values1 = ttk.Frame(root, borderwidth=3, relief="sunken")
+values2 = ttk.Frame(root, borderwidth=3, relief="sunken")
+values3 = ttk.Frame(root, borderwidth=3, relief="sunken")
+values4 = ttk.Frame(root, borderwidth=3, relief="sunken")
+class show_rep():
+    def __init__(self, number, vel, rom, time):
+        self.rep_num = number
+        self.velocity = vel
+        self.range_of_motion = rom
+        self.rep_time = time
+    
+    def make_tkvalues(name):
+        number = ('REP #: ' + str(reppp_num[0]))
+        vel = ('REP VEL: ' + str(name.velocity))
+        rom = ('REP ROM: ' + str(name.range_of_motion))
+        time = ('REP TIME: ' + str(name.rep_time))
+
+        def show():
+            #determine which row it should be ing
+            n = int(reppp_num[0])
+            if n < 7:
+                rowv = values1
+                values1.pack(expand=True, fill="both", padx=10, pady=10)
+            elif(n > 6 and n < 13):
+                rowv= values2
+                values2.pack(expand=True, fill="both", padx=10, pady=10)
+            elif(n > 12 and n < 19):
+                rowv= values3
+                values3.pack(expand=True, fill="both", padx=10, pady=10)
+            elif(n > 18 and n < 25):
+                rowv= values4
+                values4.pack(expand=True, fill="both", padx=10, pady=10)
+
+            #make the rep box and put it down
+            rep_storage = ttk.Frame(rowv, borderwidth=5, relief="sunken")
+            rep_storage.pack(expand=True,side=tk.LEFT,padx=6,pady=6)
+
+            rep_number = ttk.Label(rep_storage, text=number,padding=5)
+            rep_number.grid(row=0, column=0)
+            vel_value = ttk.Label(rep_storage, text=vel, padding=5)
+            vel_value.grid(row=1, column=0)
+            rom_value = ttk.Label(rep_storage, text=rom, padding=5)
+            rom_value.grid(row=2, column=0)
+            time_value = ttk.Label(rep_storage, text=time, padding=5)
+            time_value.grid(row=3, column=0)
+            delete_reps = ttk.Button(rep_storage, text="DELETE REP " + str(reppp_num[0]), padding = 5, command=lambda: delete_rep(n))
+            delete_reps.grid(row = 4, column=0)
+
+        show()
+
+
+#-----------------------------------------------------------------------
+class newRep():
+    #Puts all of the variables into storage
+    def __init__(self, number, vel, rom, time):
+        self.rep_num = number
+        self.velocity = vel
+        self.range_of_motion = rom
+        self.rep_time = time
+rep_value = []
+reppp_num = [0]
+def getData():
+    x = [0]
+    if (len(x) == 1):
+        SERIAL_PORT = 'COM5'
+        BAUD_RATE = 115200
+        ser = serial.Serial(SERIAL_PORT, BAUD_RATE)
+        x.append("done")
+    time = []
+    vel = []
+    rom = []
+    reppp_num[0] = reppp_num[0] + 1
+
+    def read_and_process_data():
+        line = ser.readline().decode('utf-8').strip()
+        sensorValues = line.split(',')
+
+        rep_value.append(str(reppp_num[0]))
+        vel.append(float(sensorValues[1]))
+        rom.append(float(sensorValues[2]))
+        time.append(float(sensorValues[3]))
+
+        print(reppp_num[0], vel[0], rom[0], time[0])
+        FINAL_ROMS.append(rom[0])
+        FINAL_TIMES.append(time[0])
+        FINAL_VELOCITIES.append(vel[0])
+        rep = show_rep(rep_value[0], vel[0], rom[0], time[0])
+        rep.make_tkvalues() 
+        vars = [vel, rom, time]
+        for i in vars:
+            i.pop()
+
+    # read_and_process_data()
+    # print the recieved values
+    
+    read_and_process_data()
+    # while(check[0] == True):
+    #     print("tests")
+    #     read_and_process_data()
+    # else:
+    #     print("should not checki")
+
+
+# rep1 = show_rep(1, 0.33, 100, 15)
+# rep2 = show_rep(2, 0.63, 53, 50)
+# rep3 = show_rep(3, 0.33, 100, 15)
+# rep4 = show_rep(4, 0.63, 53, 50)
+# rep5 = show_rep(5, 0.33, 100, 15)
+# rep6 = show_rep(6, 0.63, 53, 50)
+# rep7 = show_rep(7, 0.33, 100, 15)
+# rep8 = show_rep(8, 0.63, 53, 50)
+# rep9 = show_rep(9, 0.33, 100, 15)
+# rep10 = show_rep(10, 0.63, 53, 50)
+# rep11= show_rep(11, 0.33, 100, 15)
+# rep12 = show_rep(12, 0.63, 53, 50)
+# rep13 = show_rep(13, 0.63, 53, 50)
+# reps = [rep1, rep2, rep3, rep4, rep5,rep6,rep7,rep8,rep9, rep10, rep11, rep12, rep13]
+
+#makes the Rep storage location
+# def create_rep_storage():
+#     rep_storage = ttk.Frame(root)
+#     # rep_storage.pack(expand=True)
+
+#     # x = ttk.Label(rep_storage, text="HELLO")
+#     # x.grid(row=0, column=0)
+#     for i in reps:
+#         i.make_tkvalues()
+
+
+sv_ttk.set_theme("dark")
+root.mainloop()
