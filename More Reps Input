@@ -32,14 +32,14 @@ def delete_rep(num):
 # send the data to the sehet
 def finalize_data():
     for i in FINAL_VELOCITIES:
-        if i == 0:
-            FINAL_VELOCITIES.remove(i)
+            if 0 in FINAL_VELOCITIES:
+                FINAL_VELOCITIES.remove(0)
     for i in FINAL_ROMS:
-        if ImportError == 0:
-            FINAL_ROMS.remove(i)
+            if 0 in FINAL_ROMS:
+                FINAL_ROMS.remove(0)
     for i in FINAL_TIMES:
-        if i == 0:
-            FINAL_TIMES.remove(i)
+            if 0 in FINAL_TIMES:
+                FINAL_TIMES.remove(0)
     print("The fnial velocities were: ", FINAL_VELOCITIES)
     print("there were ", len(FINAL_VELOCITIES), "reps")
     print("The AVG set velocity was: ", sum(FINAL_VELOCITIES)/len(FINAL_VELOCITIES))
