@@ -171,12 +171,14 @@ def loc_peak(veloc, peaks):
             if p == peaks[x]: #see if the velocity is the highest
                 on_off_switch = 1
                 count[0] +=1
+                print("it WWWWW")
             else:
                 count[on_off_switch] += 1
-        location_of_peak.append(round(count[0] / len(reps), 2* 100))
+        location_of_peak.append(round(count[0] / len(reps)* 100, 2))
         x=x+1
         count = [0, 0]
         on_off_switch = 0
+    print(location_of_peak)
 
 def loc_peak_acell(acell, peaks):
     x = 0
@@ -189,7 +191,7 @@ def loc_peak_acell(acell, peaks):
                 count[0] +=1
             else:
                 count[on_off_switch] += 1
-        location_of_acell_peak.append(round(count[0] / len(reps), 2* 100))
+        location_of_acell_peak.append(round(count[0] / len(reps) * 100, 2))
         x=x+1
         count = [0, 0]
         on_off_switch = 0
@@ -328,7 +330,14 @@ class show_rep():
 
         show()
 
+def remove_low_rom_reps(): #gets rid of reps that have gone less than 20 cm
+    for i in rep_dict:
+        if rep_dict[i][11] < 20:
+            delete_rep(i)
+
 def finalize_data():
+    remove_low_rom_reps()
+
     #CALCULATING AVG VELOCITY
     ca = 0
     for i in rep_dict:
