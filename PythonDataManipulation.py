@@ -74,7 +74,7 @@ def getIncreasingLists(list):
 def clean_data(pos, time):
     x = 0
     while(x < len(pos)): #while the rep we are looking at is les than the total number of reps
-        if len(pos[x]) < 4: #if there is less than 4 data points
+        if len(pos[x]) < 15: #if there is less than 4 data points
             del(pos[x]) #remove them
             del(time[x])
             x = x -1 #ignore this as one of the options becuase we just removed it
